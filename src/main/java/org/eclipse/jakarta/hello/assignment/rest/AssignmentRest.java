@@ -2,6 +2,7 @@ package org.eclipse.jakarta.hello.assignment.rest;
 
 import org.eclipse.jakarta.hello.assignment.dto.CreateAssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.service.AssignmentService;
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -19,7 +20,7 @@ public class AssignmentRest {
     @POST()
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createAssignment(CreateAssignmentDTO createAssignmentDTO) {
+    public Response createAssignment(CreateAssignmentDTO createAssignmentDTO) throws BadRequestException {
         return Response.ok().entity(assignmentService.createAssignment(createAssignmentDTO)).build();
     }
 

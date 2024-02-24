@@ -1,5 +1,6 @@
 package org.eclipse.jakarta.hello.project.service;
 
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 import org.eclipse.jakarta.hello.department.dao.DepartmentDAO;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.project.dao.ProjectDAO;
@@ -25,20 +26,16 @@ public class ProjectService {
     @Inject
     private DepartmentDAO departmentDAO;
 
-    public ProjectDTO createProject(CreateProjectDTO createProjectDTO) {
-        try {
+    public ProjectDTO createProject(CreateProjectDTO createProjectDTO) throws BadRequestException {
             Optional<Department> department = departmentDAO.findById(createProjectDTO.getDepId());
             if (department.isEmpty()) {
-
+                throw new BadRequestException("Department not found");
             }
             Project project = projectMapper.toProject(createProjectDTO);
             project.setManagedDepartment(department.get());
             ProjectDTO result = projectMapper.toProjectDTO(projectDAO.add(project));
             return result;
-        }
-        catch (Exception e) {
-            throw e;
-        }
+
     }
 
     public List<ProjectDTO> getListProject() {

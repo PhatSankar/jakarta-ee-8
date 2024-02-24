@@ -1,6 +1,7 @@
 package org.eclipse.jakarta.hello.employee.service;
 
 
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 import org.eclipse.jakarta.hello.department.dao.DepartmentDAO;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.employee.dao.EmployeeDAO;
@@ -26,10 +27,10 @@ public class EmployeeService {
     @Inject
     private DepartmentDAO departmentDAO;
 
-    public EmployeeDTO createEmployee(CreateEmployeeDTO createEmployeeDTO) throws Exception {
+    public EmployeeDTO createEmployee(CreateEmployeeDTO createEmployeeDTO) throws BadRequestException {
             Optional<Department> department = departmentDAO.findById(createEmployeeDTO.getDepId());
             if (department.isEmpty()) {
-                throw new Exception("testing");
+                throw new BadRequestException("Department not found");
             }
             Employee employee = employeeMapper.toEmployee(createEmployeeDTO);
             employee.setDepartment(department.get());

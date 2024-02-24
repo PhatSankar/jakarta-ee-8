@@ -1,5 +1,6 @@
 package org.eclipse.jakarta.hello.project.service;
 
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.project.dao.ProjectDAO;
 import org.eclipse.jakarta.hello.project.dto.CreateProjectDTO;
@@ -52,7 +53,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void createProject_Successfully() {
+    void createProject_Successfully() throws BadRequestException {
         CreateProjectDTO createProjectDTO = CreateProjectDTO.builder()
                 .area(Area.HCM)
                 .projectName("RN")

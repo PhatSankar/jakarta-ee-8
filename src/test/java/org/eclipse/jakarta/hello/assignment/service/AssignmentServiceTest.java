@@ -4,6 +4,7 @@ import org.eclipse.jakarta.hello.assignment.dao.AssignmentDAO;
 import org.eclipse.jakarta.hello.assignment.dto.AssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.dto.CreateAssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.entity.Assignment;
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 import org.eclipse.jakarta.hello.employee.entity.Employee;
 import org.eclipse.jakarta.hello.employee.entity.Gender;
 import org.eclipse.jakarta.hello.project.entity.Area;
@@ -57,7 +58,7 @@ class AssignmentServiceTest {
     }
 
     @Test
-    void createAssignment_Success() {
+    void createAssignment_Success() throws BadRequestException {
         CreateAssignmentDTO createAssignmentDTO = CreateAssignmentDTO.builder()
                 .numberOfHour(120)
                 .employeeId(mockEmployee.getId())

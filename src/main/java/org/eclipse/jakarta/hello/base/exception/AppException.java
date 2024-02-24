@@ -1,28 +1,16 @@
 package org.eclipse.jakarta.hello.base.exception;
 
 import lombok.Getter;
+import org.eclipse.jakarta.hello.base.exception.body.BodyErrorResponse;
 
 import javax.ejb.ApplicationException;
 
 @Getter
 @ApplicationException
 public abstract class AppException extends Exception{
-    public AppException() {
-    }
-
-    public AppException(String message) {
+    private BodyErrorResponse bodyErrorResponse;
+    public AppException(int statusCode, String errorKey, String message) {
         super(message);
-    }
-
-    public AppException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public AppException(Throwable cause) {
-        super(cause);
-    }
-
-    public AppException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        this.bodyErrorResponse = new BodyErrorResponse(false, statusCode, errorKey, message);
     }
 }

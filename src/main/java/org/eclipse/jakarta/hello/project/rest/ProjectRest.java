@@ -1,6 +1,7 @@
 package org.eclipse.jakarta.hello.project.rest;
 
 
+import org.eclipse.jakarta.hello.base.exception.BadRequestException;
 import org.eclipse.jakarta.hello.project.dto.CreateProjectDTO;
 import org.eclipse.jakarta.hello.project.service.ProjectService;
 
@@ -18,7 +19,7 @@ public class ProjectRest {
     @POST()
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createProject(CreateProjectDTO createProjectDTO) {
+    public Response createProject(CreateProjectDTO createProjectDTO) throws BadRequestException {
         return Response.ok().entity(projectService.createProject(createProjectDTO)).build();
     }
 

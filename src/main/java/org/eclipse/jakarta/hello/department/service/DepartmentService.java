@@ -90,12 +90,7 @@ public class DepartmentService {
 
     public DepartmentDTO createDepartment(CreateDepartmentDTO createDepartmentDTO) {
         Department department = departmentMapper.toDepartment(createDepartmentDTO);
-
-        try {
-            DepartmentDTO result = departmentMapper.toDepartmentDTO(departmentDAO.add(department));
-            return result;
-        } catch (Exception e) {
-            throw e;
-        }
+        DepartmentDTO result = departmentMapper.toDepartmentDTO(departmentDAO.add(department));
+        return result;
     }
 }
