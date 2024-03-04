@@ -5,10 +5,7 @@ import org.eclipse.jakarta.hello.base.entity.BaseEntity;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.employee.entity.Gender;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,14 +14,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project  extends BaseEntity {
+public class Project extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Area area;
 
     private String projectName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Department managedDepartment;
 
 }

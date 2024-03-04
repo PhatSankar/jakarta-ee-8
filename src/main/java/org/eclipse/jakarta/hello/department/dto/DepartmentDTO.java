@@ -6,6 +6,10 @@ import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 import org.eclipse.jakarta.hello.employee.entity.Employee;
 
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.SqlResultSetMapping;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,4 +27,9 @@ public class DepartmentDTO {
     LocalDateTime startDate;
     String departmentName;
     List<EmployeeDTO> employees;
+
+    public DepartmentDTO(Long id, String name) {
+        setId(id);
+        setDepartmentName(name);
+    }
 }

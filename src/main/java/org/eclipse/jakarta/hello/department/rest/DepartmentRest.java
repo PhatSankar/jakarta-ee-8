@@ -21,6 +21,13 @@ public class DepartmentRest {
         return Response.ok().entity(departmentService.getListDepartment()).build();
     }
 
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/testing")
+    public Response getListDepartmentNameQuery() {
+        return Response.ok().entity(departmentService.getListDepartmentByNameQuery()).build();
+    }
+
     @GET()
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})

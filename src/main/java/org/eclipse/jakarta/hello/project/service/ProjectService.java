@@ -33,8 +33,7 @@ public class ProjectService {
             }
             Project project = projectMapper.toProject(createProjectDTO);
             project.setManagedDepartment(department.get());
-            ProjectDTO result = projectMapper.toProjectDTO(projectDAO.add(project));
-            return result;
+        return projectMapper.toProjectDTO(projectDAO.add(project));
 
     }
 
