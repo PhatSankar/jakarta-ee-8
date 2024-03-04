@@ -31,5 +31,10 @@ public class EmployeeDTO {
 
     private Integer salary;
 
+    public EmployeeDTO(Long id, String lastName) {
+        setId(id);
+        setLastName(lastName);
+    }
+
     List<ProjectDTO> projects;
 }

@@ -34,8 +34,7 @@ public class EmployeeService {
             }
             Employee employee = employeeMapper.toEmployee(createEmployeeDTO);
             employee.setDepartment(department.get());
-            EmployeeDTO result = employeeMapper.toEmployeeDTO(employeeDAO.add(employee));
-            return result;
+        return employeeMapper.toEmployeeDTO(employeeDAO.add(employee));
     }
 
     public List<Employee> getListEmployee() {

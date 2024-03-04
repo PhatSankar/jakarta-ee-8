@@ -16,4 +16,8 @@ public class ProjectDTO {
 
     private String projectName;
 
+    public ProjectDTO(Long id, String name) {
+        setId(id);
+        setProjectName(name);
+    }
 }

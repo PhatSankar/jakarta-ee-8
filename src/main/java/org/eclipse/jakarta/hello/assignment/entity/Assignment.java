@@ -22,11 +22,11 @@ public class Assignment  extends BaseEntity {
 
     private Integer numberOfHour;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
     private Project project;
 

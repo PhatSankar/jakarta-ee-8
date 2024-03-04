@@ -30,7 +30,7 @@ public class Employee  extends BaseEntity {
 
     private Integer salary;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deptid")
     private Department department;
 }
