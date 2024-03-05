@@ -2,12 +2,10 @@ package org.eclipse.jakarta.hello.project.dao;
 
 import org.eclipse.jakarta.hello.assignment.entity.Assignment;
 import org.eclipse.jakarta.hello.base.dao.BaseDAO;
-import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 import org.eclipse.jakarta.hello.employee.entity.Employee;
 import org.eclipse.jakarta.hello.project.entity.Project;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,7 +28,7 @@ public class ProjectDAO extends BaseDAO<Project> {
         Join<Assignment, Project> projectJoin = assignmentRoot.join("project");
         Join<Assignment, Employee> employeeJoin = assignmentRoot.join("employee");
 
-        cq.where(cb.equal(employeeJoin.get("id"), employeeId));
+        cq.select(projectJoin).where(cb.equal(employeeJoin.get("id"), employeeId));
 
         TypedQuery<Project> query = em.createQuery(cq);
         return query.getResultList();
@@ -43,5 +41,25 @@ public class ProjectDAO extends BaseDAO<Project> {
 //                "WHERE e.id = :employeeId", Project.class)
 //                .setParameter("employeeId", employeeId);
 //        return query.getResultList();
+    }
+
+    public List<Project> getListProjectByDeptId(Long deptId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Project> cq = cb.createQuery(Project.class);
+        Root<Project> projectRoot = cq.from(Project.class);
+        cq.select(projectRoot).where(cb.equal(projectRoot.get("managedDepartment"), deptId));
+        return em.createQuery(cq).getResultList();
+    }
+
+    public List<Object[]> getTotalEmployeeAndTotalHoursOfProject(Long projId) {
+        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalEmployeeAndTotalNumberOfHours", Object[].class);
+        query.setParameter("projectId", projId);
+        return query.getResultList();
+    }
+
+    public List<Object[]> getTotalSalaryAndTotalHoursOfProject(Long projId) {
+        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalSalaryAndTotalNumberOfHours", Object[].class);
+        query.setParameter("projectId", projId);
+        return query.getResultList();
     }
 }

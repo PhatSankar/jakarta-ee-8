@@ -5,6 +5,7 @@ import lombok.*;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 import org.eclipse.jakarta.hello.employee.entity.Employee;
+import org.eclipse.jakarta.hello.project.dto.ProjectDTO;
 
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
@@ -27,6 +28,8 @@ public class DepartmentDTO {
     LocalDateTime startDate;
     String departmentName;
     List<EmployeeDTO> employees;
+
+    List<ProjectDTO> projects;
 
     public DepartmentDTO(Long id, String name) {
         setId(id);

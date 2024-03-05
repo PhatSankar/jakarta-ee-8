@@ -1,5 +1,10 @@
 package org.eclipse.jakarta.hello.assignment.rest;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.eclipse.jakarta.hello.assignment.dto.AssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.dto.CreateAssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.service.AssignmentService;
 import org.eclipse.jakarta.hello.base.exception.BadRequestException;
@@ -20,7 +25,29 @@ public class AssignmentRest {
     @POST()
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createAssignment(CreateAssignmentDTO createAssignmentDTO) throws BadRequestException {
+    @ApiOperation(value = "Create Assignment")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200,
+                    message = "Create assignment successfully",
+                    response = AssignmentDTO.class
+            ),
+            @ApiResponse(
+                    code = 400,
+                    message = "Request sent to the server is invalid"
+            ),
+            @ApiResponse(
+                    code = 401,
+                    message = "Unauthorized to use this service"
+            ),
+            @ApiResponse(
+                    code = 500,
+                    message = "Request cannot be fulfilled through browser due to server-side problems"
+            )
+    })
+    public Response createAssignment(@ApiParam(value = "Assignment to be created",
+            required = true, name = "Assignment info") CreateAssignmentDTO createAssignmentDTO)
+            throws BadRequestException {
         return Response.ok().entity(assignmentService.createAssignment(createAssignmentDTO)).build();
     }
 

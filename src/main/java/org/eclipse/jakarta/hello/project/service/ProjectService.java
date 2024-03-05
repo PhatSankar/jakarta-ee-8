@@ -40,4 +40,29 @@ public class ProjectService {
     public List<ProjectDTO> getListProject() {
         return projectMapper.toProjectDTOs(projectDAO.findAll());
     }
+
+    public List<ProjectDTO> getListProjectAndDeptName(Long deptId) {
+        List<Project> result = projectDAO.getListProjectByDeptId(deptId);
+        return result.stream().map(project -> projectMapper.toProjectDTO(project)).toList();
+    }
+
+    public List<ProjectDTO> getListProjectWithTotalEmployeeAndTotalHour() {
+        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.findAll());
+        return projects.stream().map(projectDTO -> {
+            List<Object[]> objects = projectDAO.getTotalEmployeeAndTotalHoursOfProject(projectDTO.getId());
+            projectDTO.setTotalEmployee((Long) objects.get(0)[0]);
+            projectDTO.setTotalWorkingHours((Long) objects.get(0)[1]);
+            return projectDTO;
+        }).toList();
+    }
+
+    public List<ProjectDTO> getListProjectWithTotalSalaryAndTotalHour() {
+        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.findAll());
+        return projects.stream().map(projectDTO -> {
+            List<Object[]> objects = projectDAO.getTotalSalaryAndTotalHoursOfProject(projectDTO.getId());
+            projectDTO.setTotalSalary((Long) objects.get(0)[0]);
+            projectDTO.setTotalWorkingHours((Long) objects.get(0)[1]);
+            return projectDTO;
+        }).toList();
+    }
 }

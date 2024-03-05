@@ -85,7 +85,7 @@ class EmployeeServiceTest {
     void getListEmployee() {
         when(employeeDAO.findAll()).thenReturn(mockEmployess);
 
-        List<Employee> result = employeeService.getListEmployee();
+        List<EmployeeDTO> result = employeeService.getListEmployee();
 
         assertEquals(result, mockEmployess);
     }

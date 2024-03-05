@@ -37,8 +37,16 @@ public class EmployeeService {
         return employeeMapper.toEmployeeDTO(employeeDAO.add(employee));
     }
 
-    public List<Employee> getListEmployee() {
-        return employeeDAO.findAll();
+    public List<EmployeeDTO> getListEmployee() {
+        return employeeMapper.toEmployeeDTOs(employeeDAO.findAll());
+    }
+
+    public List<EmployeeDTO> getListEmployeeNotInProject() {
+        return employeeMapper.toEmployeeDTOs(employeeDAO.getListEmployeeNotInProject());
+    }
+
+    public List<EmployeeDTO> getListEmployeeWorkInProjectNotInDepartment() {
+        return employeeMapper.toEmployeeDTOs(employeeDAO.getListEmployeeWorkInProjectDifferentDepartment());
     }
 
 }

@@ -10,6 +10,7 @@ import org.eclipse.jakarta.hello.employee.entity.Employee;
 import org.eclipse.jakarta.hello.employee.mapper.EmployeeMapper;
 import org.eclipse.jakarta.hello.project.dao.ProjectDAO;
 import org.eclipse.jakarta.hello.project.dto.ProjectDTO;
+import org.eclipse.jakarta.hello.project.entity.Project;
 import org.eclipse.jakarta.hello.project.mapper.ProjectMapper;
 
 import javax.ejb.Stateless;
@@ -89,5 +90,15 @@ public class DepartmentService {
     public DepartmentDTO createDepartment(CreateDepartmentDTO createDepartmentDTO) {
         Department department = departmentMapper.toDepartment(createDepartmentDTO);
         return departmentMapper.toDepartmentDTO(departmentDAO.add(department));
+    }
+
+    public List<DepartmentDTO> getListDepartmentIncludeProject() {
+        List<Department> departments = departmentDAO.getNewList();
+        return departments.stream().map(department -> {
+            DepartmentDTO departmentDTO = departmentMapper.toDepartmentDTO(department);
+            List<Project> projects = projectDAO.getListProjectByDeptId(departmentDTO.getId());
+            departmentDTO.setProjects(projectMapper.toProjectDTOs(projects));
+            return departmentDTO;
+        }).toList();
     }
 }

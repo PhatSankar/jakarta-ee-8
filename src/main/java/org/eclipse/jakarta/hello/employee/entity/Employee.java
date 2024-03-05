@@ -18,6 +18,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(
+        name = "Employee.getListNotInAnyProject",
+        query = "SELECT e " +
+                "FROM Employee e " +
+                "WHERE e.id NOT IN (SELECT e1.id " +
+                "FROM Employee e1 " +
+                "JOIN Assignment a on a.employee.id = e1.id " +
+                "JOIN Project p on a.project.id = p.id)"
+)
 public class Employee  extends BaseEntity {
 
     private LocalDate dateOfBirth;

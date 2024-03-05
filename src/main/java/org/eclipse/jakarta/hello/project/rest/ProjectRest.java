@@ -29,4 +29,28 @@ public class ProjectRest {
     public Response getListProject() {
         return Response.ok().entity(projectService.getListProject()).build();
     }
+
+    @GET()
+    @Path("/departments/{deptId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getListProjectAndDeptName(@PathParam("deptId") Long deptId) {
+        return Response.ok().entity(projectService.getListProjectAndDeptName(deptId)).build();
+    }
+
+    @GET()
+    @Path("/total-employee-hour")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getProjectTotalEmployeeTotalHour() {
+        return Response.ok().entity(projectService.getListProjectWithTotalEmployeeAndTotalHour()).build();
+    }
+
+    @GET()
+    @Path("/total-salary-hour")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getProjectTotalSalaryTotalHour() {
+        return Response.ok().entity(projectService.getListProjectWithTotalSalaryAndTotalHour()).build();
+    }
 }

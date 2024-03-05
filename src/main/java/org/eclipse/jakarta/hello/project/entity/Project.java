@@ -14,6 +14,24 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(
+        name = "Project.getTotalEmployeeAndTotalNumberOfHours",
+        query = "SELECT COUNT(e.id), SUM(a.numberOfHour)" +
+                "FROM Project p " +
+                "LEFT JOIN Assignment a ON a.project.id = p.id " +
+                "LEFT JOIN Employee e ON a.employee.id = e.id " +
+                "WHERE p.id = :projectId " +
+                "GROUP BY p.id"
+)
+@NamedQuery(
+        name = "Project.getTotalSalaryAndTotalNumberOfHours",
+        query = "SELECT SUM(e.salary), SUM(a.numberOfHour)" +
+                "FROM Project p " +
+                "LEFT JOIN Assignment a ON a.project.id = p.id " +
+                "LEFT JOIN Employee e ON a.employee.id = e.id " +
+                "WHERE p.id = :projectId " +
+                "GROUP BY p.id"
+)
 public class Project extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
