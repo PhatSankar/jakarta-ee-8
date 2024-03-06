@@ -1,9 +1,7 @@
 package org.eclipse.jakarta.hello.department.rest;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import org.eclipse.jakarta.hello.base.filters.Secure;
 import org.eclipse.jakarta.hello.department.dto.CreateDepartmentDTO;
 import org.eclipse.jakarta.hello.department.dto.DepartmentDTO;
 import org.eclipse.jakarta.hello.department.entity.Department;
@@ -17,12 +15,14 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/departments")
+@Api(value = "Department API")
 public class DepartmentRest {
     @Inject
     private DepartmentService departmentService;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    @Secure
     @ApiOperation(value = "Get all department list")
     @ApiResponses({
             @ApiResponse(

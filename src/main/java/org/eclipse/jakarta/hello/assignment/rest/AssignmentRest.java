@@ -1,9 +1,6 @@
 package org.eclipse.jakarta.hello.assignment.rest;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.eclipse.jakarta.hello.assignment.dto.AssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.dto.CreateAssignmentDTO;
 import org.eclipse.jakarta.hello.assignment.service.AssignmentService;
@@ -18,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/assignments")
+@Api(value = "Assignment API")
 public class AssignmentRest {
     @Inject
     private AssignmentService assignmentService;

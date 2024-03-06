@@ -1,9 +1,6 @@
 package org.eclipse.jakarta.hello.employee.rest;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.eclipse.jakarta.hello.assignment.dto.AssignmentDTO;
 import org.eclipse.jakarta.hello.employee.dto.CreateEmployeeDTO;
 import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
@@ -15,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/employees")
+@Api(value = "Employee API")
 public class EmployeeRest {
 
     @Inject

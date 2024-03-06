@@ -1,4 +1,4 @@
-package org.eclipse.jakarta.hello.base;
+package org.eclipse.jakarta.hello.base.filters;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

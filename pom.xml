@@ -35,8 +35,7 @@
 		<download-maven-plugin-version>1.8.0</download-maven-plugin-version>
 		<maven-resources-plugin-version>3.3.0</maven-resources-plugin-version>
 		<replacer-version>1.5.3</replacer-version>
-
-
+		<jbcrypt.version>0.4</jbcrypt.version>
 
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 	</properties>
@@ -137,8 +136,12 @@
 			<artifactId>swagger-jaxrs</artifactId>
 			<version>${io-swagger-version}</version>
 		</dependency>
-
-
+<!--		BCript-->
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>${jbcrypt.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
