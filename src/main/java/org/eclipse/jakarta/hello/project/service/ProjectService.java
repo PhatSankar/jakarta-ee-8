@@ -27,12 +27,12 @@ public class ProjectService {
     private DepartmentDAO departmentDAO;
 
     public ProjectDTO createProject(CreateProjectDTO createProjectDTO) throws BadRequestException {
-            Optional<Department> department = departmentDAO.findById(createProjectDTO.getDepId());
-            if (department.isEmpty()) {
-                throw new BadRequestException("Department not found");
-            }
-            Project project = projectMapper.toProject(createProjectDTO);
-            project.setManagedDepartment(department.get());
+        Optional<Department> department = departmentDAO.findById(createProjectDTO.getDepId());
+        if (department.isEmpty()) {
+            throw new BadRequestException("Department not found");
+        }
+        Project project = projectMapper.toProject(createProjectDTO);
+        project.setManagedDepartment(department.get());
         return projectMapper.toProjectDTO(projectDAO.add(project));
 
     }

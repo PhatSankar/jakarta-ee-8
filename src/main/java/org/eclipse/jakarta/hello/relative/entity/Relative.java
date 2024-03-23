@@ -36,7 +36,7 @@ import javax.persistence.*;
 )
 @NamedQuery(
         name = "Relative.findAllByEmployeeWorkInProjectOfDepartment",
-        query = "SELECT r `" +
+        query = "SELECT r " +
                 "FROM Relative r " +
                 "LEFT JOIN Employee e ON e.id = r.employee.id " +
                 "LEFT JOIN Assignment a on a.employee.id = e.id " +

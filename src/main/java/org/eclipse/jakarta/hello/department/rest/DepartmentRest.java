@@ -10,6 +10,7 @@ import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -61,7 +62,8 @@ public class DepartmentRest {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Create Department")
+    @ApiOperation(value = "Create Department", authorizations = {@Authorization(HttpHeaders.AUTHORIZATION)})
+    @Secure
     @ApiResponses({
             @ApiResponse(
                     code = 200,

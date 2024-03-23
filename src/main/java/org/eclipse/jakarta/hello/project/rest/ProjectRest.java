@@ -1,11 +1,9 @@
 package org.eclipse.jakarta.hello.project.rest;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.eclipse.jakarta.hello.base.exception.BadRequestException;
+import org.eclipse.jakarta.hello.base.filters.Secure;
 import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 import org.eclipse.jakarta.hello.project.dto.CreateProjectDTO;
 import org.eclipse.jakarta.hello.project.dto.ProjectDTO;
@@ -14,6 +12,7 @@ import org.eclipse.jakarta.hello.project.service.ProjectService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,7 +26,8 @@ public class ProjectRest {
     @POST()
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Create Project")
+    @Secure
+    @ApiOperation(value = "Create Project", authorizations = {@Authorization(HttpHeaders.AUTHORIZATION)})
     @ApiResponses({
             @ApiResponse(
                     code = 200,

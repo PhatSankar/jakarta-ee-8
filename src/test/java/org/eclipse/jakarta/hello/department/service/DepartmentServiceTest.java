@@ -17,7 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -142,12 +144,12 @@ public class DepartmentServiceTest {
     public void createDepartment_Valid_Successfully() {
         CreateDepartmentDTO createDepartmentDTO = CreateDepartmentDTO.builder()
                 .departmentName("VAMOS")
-                .startDate(LocalDateTime.of(2024,11,28,6,10,12))
+                .startDate(LocalDate.of(2024,11,28))
                 .build();
 
         Department mockDepartment = Department.builder()
                 .departmentName(createDepartmentDTO.getDepartmentName())
-                .startDate(createDepartmentDTO.getStartDate())
+                .startDate(LocalDateTime.of(createDepartmentDTO.getStartDate(), LocalTime.MIN))
                 .build();
         mockDepartment.setId(1L);
 
@@ -164,7 +166,7 @@ public class DepartmentServiceTest {
 
         CreateDepartmentDTO createDepartmentDTO = CreateDepartmentDTO.builder()
                 .departmentName("VAMOS")
-                .startDate(LocalDateTime.of(2024,11,28,6,10,12))
+                .startDate(LocalDate.of(2024,11,28))
                 .build();
 
         when(departmentDAO.add(any(Department.class))).thenThrow(exception);

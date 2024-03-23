@@ -2,12 +2,14 @@ package org.eclipse.jakarta.hello.employee.rest;
 
 import io.swagger.annotations.*;
 import org.eclipse.jakarta.hello.assignment.dto.AssignmentDTO;
+import org.eclipse.jakarta.hello.base.filters.Secure;
 import org.eclipse.jakarta.hello.employee.dto.CreateEmployeeDTO;
 import org.eclipse.jakarta.hello.employee.dto.EmployeeDTO;
 import org.eclipse.jakarta.hello.employee.service.EmployeeService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -21,7 +23,8 @@ public class EmployeeRest {
     @POST()
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Create Employee")
+    @ApiOperation(value = "Create Employee", authorizations = {@Authorization(HttpHeaders.AUTHORIZATION)})
+    @Secure
     @ApiResponses({
             @ApiResponse(
                     code = 200,
