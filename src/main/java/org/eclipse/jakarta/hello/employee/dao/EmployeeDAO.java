@@ -8,6 +8,7 @@ import org.eclipse.jakarta.hello.employee.entity.Employee;
 import org.eclipse.jakarta.hello.project.entity.Project;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -22,24 +23,33 @@ public class EmployeeDAO extends BaseDAO<Employee> {
     }
 
     public List<Employee> getListEmployeeFromDepartment(Long deptId) {
+        EntityGraph entityGraph = em.getEntityGraph("employee.department.entity.graph");
         Query query = em.createQuery("SELECT e FROM Employee e WHERE e.department.id = :deptId")
                 .setParameter("deptId", deptId);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
     }
 
     public List<Employee> getListEmployeeNotInProject() {
-        return em.createNamedQuery("Employee.getListNotInAnyProject", Employee.class).getResultList();
+        return em.createNamedQuery("Employee.getListNotInAnyProject", Employee.class)
+                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("employee.assignment.entity.graph"))
+                .getResultList();
     }
 
     public List<Employee> getListEmployeeWorkInProjectDifferentDepartment() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        EntityGraph entityGraph = em.getEntityGraph("employee.assignment.entity.graph");
 
-        Root<Assignment> assignmentRoot = cq.from(Assignment.class);
-        Join<Assignment, Employee> employeeJoin = assignmentRoot.join("employee");
-        Join<Assignment, Project> projectJoin = assignmentRoot.join("project");
-        cq.select(employeeJoin).where(cb.notEqual(employeeJoin.get("department"), projectJoin.get("managedDepartment")));
-        return em.createQuery(cq).getResultList();
+
+        Root<Employee> employeeRoot = cq.from(Employee.class);
+        Join<Assignment, Employee> assignmentJoin = employeeRoot.join("assignments");
+        Join<Assignment, Project> projectJoin = assignmentJoin.join("project");
+        cq.select(employeeRoot).where(cb.notEqual(employeeRoot.get("department"),
+                projectJoin.get("managedDepartment")));
+        return em.createQuery(cq)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .getResultList();
     }
 
 

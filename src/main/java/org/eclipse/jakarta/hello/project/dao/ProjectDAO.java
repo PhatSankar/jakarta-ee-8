@@ -6,6 +6,7 @@ import org.eclipse.jakarta.hello.employee.entity.Employee;
 import org.eclipse.jakarta.hello.project.entity.Project;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,17 +21,19 @@ public class ProjectDAO extends BaseDAO<Project> {
     }
 
     public List<Project> getListProjectByEmployeeId(Long employeeId) {
+        EntityGraph entityGraph = em.getEntityGraph("project.assignment.entity.graph");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         //CriteriaQuery use type of what entity to return
         CriteriaQuery<Project> cq = cb.createQuery(Project.class);
-        //Root if want to join must use Entity have the field to join
-        Root<Assignment> assignmentRoot = cq.from(Assignment.class);
-        Join<Assignment, Project> projectJoin = assignmentRoot.join("project");
-        Join<Assignment, Employee> employeeJoin = assignmentRoot.join("employee");
 
-        cq.select(projectJoin).where(cb.equal(employeeJoin.get("id"), employeeId));
+        Root<Project> projectRoot = cq.from(Project.class);
+        Join<Project, Assignment> projectAssignmentJoin = projectRoot.join("assignments");
+        Join<Assignment, Employee> assignmentEmployeeJoin = projectAssignmentJoin.join("employee");
+
+        cq.select(projectRoot).where(cb.equal(assignmentEmployeeJoin.get("id"), employeeId));
 
         TypedQuery<Project> query = em.createQuery(cq);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
 
 
@@ -44,22 +47,33 @@ public class ProjectDAO extends BaseDAO<Project> {
     }
 
     public List<Project> getListProjectByDeptId(Long deptId) {
+        EntityGraph entityGraph = em.getEntityGraph("project.department.entity.graph");
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Project> cq = cb.createQuery(Project.class);
         Root<Project> projectRoot = cq.from(Project.class);
         cq.select(projectRoot).where(cb.equal(projectRoot.get("managedDepartment"), deptId));
-        return em.createQuery(cq).getResultList();
+        return em.createQuery(cq)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .getResultList();
     }
 
     public List<Object[]> getTotalEmployeeAndTotalHoursOfProject(Long projId) {
-        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalEmployeeAndTotalNumberOfHours", Object[].class);
+        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalEmployeeAndTotalNumberOfHours",
+                Object[].class);
         query.setParameter("projectId", projId);
         return query.getResultList();
     }
 
     public List<Object[]> getTotalSalaryAndTotalHoursOfProject(Long projId) {
-        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalSalaryAndTotalNumberOfHours", Object[].class);
+        TypedQuery<Object[]> query = em.createNamedQuery("Project.getTotalSalaryAndTotalNumberOfHours",
+                Object[].class);
         query.setParameter("projectId", projId);
         return query.getResultList();
+    }
+
+    public List<Project> getListProject() {
+        return em.createQuery("SELECT p FROM Project p", Project.class)
+                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("project.department.entity.graph"))
+                .getResultList();
     }
 }

@@ -19,8 +19,10 @@ public class RelativeService {
     @Inject
     private RelativeDAO relativeDAO;
 
+    @Inject
+    private RelativeMapper relativeMapper;
+
     public List<RelativeDTO> getListRelativeInDepartment(Long deptId) {
-//        RelativeDTO testing = new RelativeDTO(1,)
-        return relativeDAO.getListRelativeInDTO(deptId);
+        return relativeMapper.toRelativeDTOs(relativeDAO.getListRelativeInDTO(deptId));
     }
 }

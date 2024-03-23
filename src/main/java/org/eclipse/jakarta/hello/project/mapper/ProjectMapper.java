@@ -14,7 +14,7 @@ public interface ProjectMapper {
     @Mapping(target = "departmentName", source = "managedDepartment.departmentName")
     ProjectDTO toProjectDTO(Project project);
 
-    @Mapping(target = "departmentName", source = "managedDepartment.departmentName")
+//    @Mapping(target = "departmentName", source = "managedDepartment.departmentName")
     List<ProjectDTO> toProjectDTOs(List<Project> project);
 
     Project toProject(CreateProjectDTO createProjectDTO);

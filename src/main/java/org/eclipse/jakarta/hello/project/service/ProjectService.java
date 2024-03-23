@@ -38,7 +38,7 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getListProject() {
-        return projectMapper.toProjectDTOs(projectDAO.findAll());
+        return projectMapper.toProjectDTOs(projectDAO.getListProject());
     }
 
     public List<ProjectDTO> getListProjectAndDeptName(Long deptId) {
@@ -47,7 +47,7 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getListProjectWithTotalEmployeeAndTotalHour() {
-        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.findAll());
+        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.getListProject());
         return projects.stream().map(projectDTO -> {
             List<Object[]> objects = projectDAO.getTotalEmployeeAndTotalHoursOfProject(projectDTO.getId());
             projectDTO.setTotalEmployee((Long) objects.get(0)[0]);
@@ -57,7 +57,7 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getListProjectWithTotalSalaryAndTotalHour() {
-        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.findAll());
+        List<ProjectDTO> projects = projectMapper.toProjectDTOs(projectDAO.getListProject());
         return projects.stream().map(projectDTO -> {
             List<Object[]> objects = projectDAO.getTotalSalaryAndTotalHoursOfProject(projectDTO.getId());
             projectDTO.setTotalSalary((Long) objects.get(0)[0]);

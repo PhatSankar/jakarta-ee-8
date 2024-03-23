@@ -3,6 +3,7 @@ package org.eclipse.jakarta.hello.department.service;
 import org.eclipse.jakarta.hello.department.dao.DepartmentDAO;
 import org.eclipse.jakarta.hello.department.dto.CreateDepartmentDTO;
 import org.eclipse.jakarta.hello.department.dto.DepartmentDTO;
+import org.eclipse.jakarta.hello.department.dto.DepartmentProjectDTO;
 import org.eclipse.jakarta.hello.department.entity.Department;
 import org.eclipse.jakarta.hello.department.mapper.DepartmentMapper;
 import org.eclipse.jakarta.hello.employee.dao.EmployeeDAO;
@@ -40,27 +41,7 @@ public class DepartmentService {
     private ProjectMapper projectMapper;
 
     public List<DepartmentDTO> getListDepartment() {
-        List<Department> departments = departmentDAO.findAll();
-
-        return departments.stream()
-                .map(department -> departmentMapper.toDepartmentDTO(department))
-                .map(departmentDTO -> {
-                    List<Employee> employees = employeeDAO.getListEmployeeFromDepartment(departmentDTO.getId());
-                    departmentDTO.setEmployees(employees.stream()
-                            .map(employee -> employeeMapper.toEmployeeDTO(employee)).toList());
-                    return departmentDTO;
-                })
-                .map(departmentDTO -> {
-                    departmentDTO.getEmployees().stream()
-                            .forEach(employeeDTO ->
-                            {
-                                employeeDTO.setProjects(projectMapper
-                                        .toProjectDTOs(projectDAO
-                                                .getListProjectByEmployeeId(employeeDTO.getId())));
-                            });
-                    return departmentDTO;
-                })
-                .toList();
+        return departmentMapper.toDepartmentDTOs(departmentDAO.getAllDepartment());
     }
 
     public List getListDepartmentByNameQuery() {
@@ -77,7 +58,6 @@ public class DepartmentService {
         List<Employee> employeeList = employeeDAO.getListEmployeeFromDepartment(deptId);
 
         departmentDTO.setEmployees(employeeMapper.toEmployeeDTOs(employeeList));
-
         departmentDTO.getEmployees().stream().forEach(employeeDTO -> {
             List<ProjectDTO> projectDTOS = projectMapper.toProjectDTOs(projectDAO.getListProjectByEmployeeId(
                     employeeDTO.getId()
@@ -92,13 +72,8 @@ public class DepartmentService {
         return departmentMapper.toDepartmentDTO(departmentDAO.add(department));
     }
 
-    public List<DepartmentDTO> getListDepartmentIncludeProject() {
-        List<Department> departments = departmentDAO.getNewList();
-        return departments.stream().map(department -> {
-            DepartmentDTO departmentDTO = departmentMapper.toDepartmentDTO(department);
-            List<Project> projects = projectDAO.getListProjectByDeptId(departmentDTO.getId());
-            departmentDTO.setProjects(projectMapper.toProjectDTOs(projects));
-            return departmentDTO;
-        }).toList();
+    public List<DepartmentProjectDTO> getListDepartmentIncludeProject() {
+        List<Department> departments = departmentDAO.getListDepartmentAndProjects();
+        return departmentMapper.toDepartmentProjectDTOs(departments);
     }
 }

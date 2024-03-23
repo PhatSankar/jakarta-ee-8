@@ -14,24 +14,29 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedEntityGraph(
-        name = "relative-entity-graph",
+        name = "relative.employee.entity.graph",
         attributeNodes = {
-                @NamedAttributeNode(value = "employee", subgraph = "employee-subgraph")
+                @NamedAttributeNode(value = "employee", subgraph = "employee.assignment.subgraph")
         },
         subgraphs = {
                 @NamedSubgraph(
-                        name = "employee-subgraph",
+                        name = "employee.assignment.subgraph",
                         attributeNodes = {
-                                @NamedAttributeNode("department")
+                                @NamedAttributeNode(value = "assignments",
+                                        subgraph = "employee.assignment.project.sub.graph")
+                        }
+                ),
+                @NamedSubgraph(
+                        name = "employee.assignment.project.sub.graph",
+                        attributeNodes = {
+                                @NamedAttributeNode(value = "project")
                         }
                 )
         }
 )
 @NamedQuery(
         name = "Relative.findAllByEmployeeWorkInProjectOfDepartment",
-        query = "SELECT new org.eclipse.jakarta.hello.relative.dto.RelativeDTO(" +
-                "r.id, r.fullName, r.gender, r.phoneNumber, r.relationship" +
-                ") " +
+        query = "SELECT r `" +
                 "FROM Relative r " +
                 "LEFT JOIN Employee e ON e.id = r.employee.id " +
                 "LEFT JOIN Assignment a on a.employee.id = e.id " +

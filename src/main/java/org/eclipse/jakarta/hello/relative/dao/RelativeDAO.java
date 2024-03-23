@@ -5,6 +5,7 @@ import org.eclipse.jakarta.hello.relative.dto.RelativeDTO;
 import org.eclipse.jakarta.hello.relative.entity.Relative;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -14,9 +15,15 @@ public class RelativeDAO extends BaseDAO<Relative> {
         super(Relative.class);
     }
 
-    public List<RelativeDTO> getListRelativeInDTO(Long deptId) {
-        TypedQuery<RelativeDTO> query = em.createNamedQuery("Relative.findAllByEmployeeWorkInProjectOfDepartment", RelativeDTO.class);
+    public List<Relative> getListRelativeInDTO(Long deptId) {
+        EntityGraph entityGraph = em.getEntityGraph("relative.employee.entity.graph");
+        TypedQuery<Relative> query = em.createNamedQuery
+                ("Relative.findAllByEmployeeWorkInProjectOfDepartment",
+                        Relative.class);
+
         query.setParameter("deptId", deptId);
+
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
     }
 }

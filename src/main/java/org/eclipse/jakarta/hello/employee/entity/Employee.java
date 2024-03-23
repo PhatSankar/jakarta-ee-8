@@ -1,16 +1,13 @@
 package org.eclipse.jakarta.hello.employee.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
+import org.eclipse.jakarta.hello.assignment.entity.Assignment;
 import org.eclipse.jakarta.hello.base.entity.BaseEntity;
 import org.eclipse.jakarta.hello.department.entity.Department;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +15,19 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraphs(
+        {
+                @NamedEntityGraph(name = "employee.department.entity.graph",
+                        attributeNodes = {
+                                @NamedAttributeNode(value = "department")
+                        }),
+                @NamedEntityGraph(name = "employee.assignment.entity.graph",
+                        attributeNodes = @NamedAttributeNode(value = "assignments",
+                                subgraph = "assignment.project.sub.graph"),
+                        subgraphs = @NamedSubgraph(name = "assignment.project.sub.graph",
+                                attributeNodes = @NamedAttributeNode(value = "project")))
+        }
+)
 @NamedQuery(
         name = "Employee.getListNotInAnyProject",
         query = "SELECT e " +
@@ -27,7 +37,7 @@ import java.time.LocalDateTime;
                 "JOIN Assignment a on a.employee.id = e1.id " +
                 "JOIN Project p on a.project.id = p.id)"
 )
-public class Employee  extends BaseEntity {
+public class Employee extends BaseEntity {
 
     private LocalDate dateOfBirth;
     private String firstName;
@@ -42,4 +52,7 @@ public class Employee  extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deptid")
     private Department department;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Assignment> assignments;
 }
